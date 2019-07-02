@@ -22,9 +22,8 @@ public class Producter {
         Destination destination = session.createQueue(QUEUE_NAME);
         MessageProducer producer = session.createProducer(destination);
 
-        long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime <= 1000) {
-            producer.send(session.createTextMessage(Long.toString(System.currentTimeMillis())));
+        for (int i = 1; i <= 8; i++) {
+            producer.send(session.createTextMessage(Integer.toString(i)));
         }
         producer.close();
         session.close();
