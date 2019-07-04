@@ -18,6 +18,7 @@ public class DurableTopicConsumer {
     public static void main(String[] args) throws JMSException {
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(BROKER_URL);
         Connection connection = connectionFactory.createConnection();
+        connection.setClientID("z3");
 
         Session session = connection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
         Topic topic = session.createTopic(TOPIC_NAME);
