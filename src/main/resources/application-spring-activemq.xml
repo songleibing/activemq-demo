@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jms https://www.springframework.org/schema/jms/spring-jms.xsd">
 
     <bean id="connectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
         <property name="connectionFactory">
@@ -21,4 +21,21 @@
         <property name="defaultDestination" ref="queue"></property>
     </bean>
 
+    <!-- 消息监听容器 -->
+    <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="queue"/>
+        <property name="messageListener">
+            <bean class="com.garen.activemq.demo_07.SpringConsumerListener"/>
+        </property>
+    </bean>
+
+    <!--使用jms命名空间配置监听-->
+    <jms:listener-container destination-type="queue" container-type="default" connection-factory="connectionFactory"
+                            acknowledge="auto" concurrency="5-10">
+        <jms:listener destination="queue" ref="queue"/>
+    </jms:listener-container>
+
+    <!--jms注解的方式配置监听-->
+    <jms:annotation-driven/>
 </beans>
