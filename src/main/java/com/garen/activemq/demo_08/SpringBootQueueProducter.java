@@ -20,7 +20,7 @@ public class SpringBootQueueProducter {
         template.convertAndSend(queue, "spring-boot-message-" + System.currentTimeMillis());
     }
 
-    @Scheduled(fixedDelay = 3000L)
+//    @Scheduled(fixedDelay = 3000L)
     public void sendScheduled() {
         this.send();
     }
